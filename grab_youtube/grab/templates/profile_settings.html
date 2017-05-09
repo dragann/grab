@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+    <style>
+        #settings-menu-item a, #settings-menu-item i {
+            color: #ff6f00;
+        }
+    </style>
+    <script>
+        URLS = {
+            'delete_account': "{% url 'grab_youtube.grab.views.delete_user' slug %}",
+            'login': "{% url 'login' %}"
+        }
+    </script>
+{% endblock %}
+
+{% block page_header %}
+    {% include 'label_with_icon.html' with icon='cog' label='Your Settings' extra='style="color: dodgerblue"' %}
+{% endblock %}
+
+{% block content %}
+    <div class="settings-section">
+        <div class="content-header">
+            {% include 'label_with_icon.html' with icon='user' label='PROFILE' %}
+        </div>
+        <div class="settings-section-content">
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="settings-section">
+        <div class="content-header">
+{#            {% include 'label_with_icon.html' with icon='lock2' label='PASSWORD' %}#}
+            {% include 'label_with_icon.html' with icon='contrast' label='ACCOUNT' extra='style="font-size: 11px;"' %}
+            {% include 'label_with_icon.html' with label=profile.user.email label_extra='style="color:#aaa"' %}
+            <a class="delete-account-btn content-header-btn" href="javascript:"><i class="icon-trash"></i></a>
+        </div>
+
+        <div class="settings-section-content">
+            <a href="javascript:">Change E-mail&nbsp;&nbsp;<i class="icon-caret-down"></i></a>
+        </div>
+
+        <div class="settings-section-content">
+            {% if has_password %}
+                <a href="javascript:">Change password&nbsp;&nbsp;<i class="icon-caret-down"></i></a>
+            {% else %}
+                <div class="alert">
+                    {% include 'label_with_icon.html' with label="You haven't set a password for your account yet" icon="exclamation-circle" extra='style="color: red"' %}
+                </div>
+                Choose password
+            {% endif %}
+            <form class="password-form{% if has_password %} hidden{% endif %}" method="post">
+                {% csrf_token %}
+                {% if has_password %}
+                    <input {% if 'old_password' in password_form.errors %}class="error-field"{% endif %} type="password" name="old_password" placeholder="Current Password"/>
+                    <div class="form-error">{{ password_form.errors.old_password }}</div>
+                {% endif %}
+
+                <input {% if 'new_password1' in password_form.errors %}class="error-field"{% endif %} type="password" name="new_password1" placeholder="New Password"/>
+                <div class="form-error">{{ password_form.errors.new_password1 }}</div>
+
+                <input {% if 'new_password2' in password_form.errors %}class="error-field"{% endif %} type="password" name="new_password2" placeholder="Confirm New Password"/>
+                <div class="form-error">{{ password_form.errors.new_password2 }}</div>
+
+                <button class="btn" type="submit">
+                    {% if has_password %}
+                        Change Password
+                    {% else %}
+                        Set Password
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+        <div class="clear"></div>
+
+{#        <div class="settings-section-content">#}
+{#        <a href="{% url 'grab_youtube.grab.views.delete_user' profile.slug %}">#}
+{#            Delete Account#}
+{#        </a>#}
+{#        </div>#}
+{#        <div class="clear"></div>#}
+    </div>
+{% endblock %}

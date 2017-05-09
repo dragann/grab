@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+    <style>
+        #friends-menu-item a, #friends-menu-item i {
+            color: #ff6f00;
+        }
+    </style>
+{% endblock %}
+
+{% block page_header %}
+    {% include 'label_with_icon.html' with icon='users' label='Users' extra='style="color: #51bd2e"' %}
+{% endblock %}
+
+{% block content %}
+    <div class="content-header">
+        <a class="filter active" href="#">
+            FRIENDS
+        </a>
+    </div>
+    <div class="friends">
+        {% for friend in friends %}
+            <div class="friend">
+                <a class="avatar" href="{% url 'grab_youtube.grab.views.user_detail' friend.slug %}">
+                    <img src="{{ friend.avatar_url_large }}"/>
+                </a>
+                <div class="friend-details">
+                    <a href="{% url 'grab_youtube.grab.views.user_detail' friend.slug %}">
+                        {{ friend.name }}
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="clear"></div>
+    </div>
+{% endblock %}

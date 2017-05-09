@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+
+{% load static %}
+
+<html>
+<head>
+    <link href="{% static 'css/grab.css' %}" type="text/css" rel="stylesheet" />
+    <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" />
+    {% block extrahead %}{% endblock %}
+    <style>
+        body {
+            background-color: #e2e2e2;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        #login-wrapper {
+            margin: auto;
+            text-align: center;
+            padding: 50px 0 30px 0;
+            width: 400px;
+            background-color: white;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border: 1px solid #d0d2d2;
+            border-top: none;
+        }
+
+        #app-logo {
+            font-size: 40px;
+            color: #ff6f00;
+            margin-bottom: 40px
+        }
+
+        #fb-login-btn {
+            background-color: #3b5998;
+            color: white;
+            border: none;
+            display: inline-block;
+            margin-top: 20px;
+            padding-left: 8px;
+        }
+
+        #fb-login-btn .label-with-icon {
+            display: block;
+        }
+
+        #fb-login-btn i {
+            font-size: 20px;
+        }
+
+        #fb-login-btn label {
+            margin-top: 2px;
+        }
+
+        #fb-login-btn:hover {
+            background-color: #5069be;
+        }
+
+        #login-form {
+            width: 350px;
+            border-top: 1px solid #d2d2d2;
+            border-bottom: 1px solid #d2d2d2;
+            padding: 20px 0;
+            margin: auto;
+        }
+
+        #login-form label {
+            display: none;
+        }
+
+        #login-form input {
+            border: 1px solid #d2d2d2;
+            width: 100%;
+            padding: 8px;
+            border-radius: 3px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            font-size: 14px;
+            outline: none;
+            color: #666;
+        }
+
+        #login-form input::placeholder {
+            color: #ccc;
+        }
+
+        #login-error ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #d2d2d2;
+            padding-bottom: 20px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="login-wrapper">
+    <div id="app-logo">
+        <i class="icon-contrast"></i>
+    </div>
+
+    <form id="login-form" method="post">
+        {% csrf_token %}
+        <div id="login-error">
+            {% for error in form.errors.values %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <input id="id_username" type="email" name="username" autofocus="autofocus" placeholder="E-mail"/>
+        <input id="id_password" type="password" name="password" placeholder="Password"/>
+        <input type="hidden"/>
+        <button class="btn" type="submit">Login</button>
+    </form>
+
+    <a id="fb-login-btn" class="btn" href="{% url 'social:begin' 'facebook' %}">
+        {% include 'label_with_icon.html' with icon="facebook-official" label="Login with Facebook" %}
+    </a>
+</div>
+
+</body>
+</html>
+
+
+
+
+

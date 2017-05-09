@@ -1,0 +1,7 @@
+<div class="label-with-icon">
+    {% if icon %}
+        <i class="label-icon icon-{{ icon }}"{% if extra %} {{ extra }}{% endif %}></i>
+    {% endif %}
+    <label class=""{% if label_extra %} {{ label_extra }}{% endif %}>{{ label }}</label>
+    <div class="clear"></div>
+</div>

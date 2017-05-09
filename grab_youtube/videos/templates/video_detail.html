@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+    <style>
+        #videos-menu-item a, #videos-menu-item i {
+            color: #ff8a21;
+        }
+    </style>
+{% endblock %}
+
+{% block page_header %}
+    <div class="label-with-icon">
+        <i class="icon-youtube" style="color: red; float:left;"></i>
+        <label class="ellipsize">{{ video.title }}</label>
+        <div class="clear"></div>
+    </div>
+{% endblock %}
+
+{% block alert %}
+    {% if video.archived_at %}
+    <div class="alert-text">
+        This video is archived. It will not show up in your video list.
+    </div>
+    <div class="alert-buttons">
+        <button class="btn restore-video-btn">Restore</button>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div id="video-detail" data-video-id="{{ video.id }}">
+        <div class="content-header top-border">
+            {% if back_url %}
+                <a href="{{ back_url }}">
+                    {% include 'label_with_icon.html' with icon='arrow-left2' label='back' %}
+                </a>
+            {% endif %}
+            {% if video.profile == request.profile and not video.archived_at %}
+                <a class="archive-video-btn content-header-btn" href="javascript:"><i class="icon-archive"></i></a>
+            {% endif %}
+            <span id="share-date" class="faded content-header-btn">
+                shared {{ video.shared_at|date:'M d Y' }}
+            </span>
+        </div>
+        <iframe width="100%" height="500px" src="{{ video.embed_url }}" frameborder="0" allowfullscreen></iframe>
+    </div>
+{% endblock %}

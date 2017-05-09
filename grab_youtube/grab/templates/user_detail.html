@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load pagination_tags %}
+
+{% block extrahead %}
+{#    <script src="https://www.youtube.com/iframe_api"></script>#}
+    <style>
+        #videos-menu-item a, #videos-menu-item i {
+            color: #ff6f00;
+        }
+    </style>
+    <script>
+        URLS = {
+            'delete_videos': '{% url "grab_youtube.grab.views.delete_videos" profile.slug %}',
+            'video_list': '{% url "grab_youtube.grab.views.user_detail" profile.slug %}',
+            'sync_videos': '{% url "grab_youtube.grab.views.sync_videos" profile.slug %}',
+        }
+    </script>
+{% endblock %}
+
+{% block page_header %}
+    {% if profile == request.profile %}
+        {% include 'label_with_icon.html' with icon='youtube' label='Your Videos' extra='style="color: red"' %}
+    {% else %}
+        {% include 'label_with_icon.html' with icon='youtube' label=profile.name|add:"'s Videos" extra='style="color: red"' %}
+    {% endif %}
+    <div class="sync-date">
+        {% if profile == request.profile %}
+            <button class="btn sync-btn{% if not videos %} active{% endif %}">Sync Videos</button>
+        {% endif %}
+        <div class="date faded">
+            {% if profile.synced_at %}
+                Synced {{ profile.synced_at|timesince }} ago
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block alert %}
+    {% if not profile.synced_at %}
+        <div class="alert-text">
+            It seems that you don't have any synchronized videos.<br/>Go ahead and click on that shiny orange button on the top-right of the page <3
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div id="video-list">
+        <div id="video-list-content">
+
+            <div class="content-header{% if videos %} top-border{% endif %}">
+                {% if videos %}
+                    {% for f in filters %}
+                        <a class="filter{% if f == filter %} active{% endif %}" href="{% url 'grab_youtube.grab.views.user_detail' profile.slug %}?filter={{ f }}">
+                            {{ f|upper }}
+                        </a>
+                        {% if not forloop.last %}<span class="faded">&bull;</span>{% endif %}
+                    {% endfor %}
+{#                    <a class="filter"><i class="icon-search"></i></a>#}
+
+                    {% if profile == request.profile %}
+                        <a class="delete-all-btn content-header-btn" href="javascript:"><i class="icon-trash"></i></a>
+                    {% endif %}
+
+                    <div class="sort-videos-btn content-header-btn">
+                        <i class="icon-sort" title="Sort Videos" rel="tooltip"></i>
+                        {% if sort %}
+                            <a class="secondary content-header-btn current-sort" href="#">
+                                <div class="label-with-icon">
+                                    <i class="{{ icon_class }}"></i>
+                                    <label>{{ label }}</label>
+                                    <div class="clear"></div>
+                                </div>
+                            </a>
+                        {% endif %}
+                        <span class="sorting-options">
+                            <a class="secondary content-header-btn{% if sort == 'title' %} active{% endif %}" href="{% url 'grab_youtube.grab.views.user_detail' profile.slug %}?filter={{ filter }}&sort=title">
+                                <div class="label-with-icon">
+                                    <i class="icon-arrow-up2"></i>
+                                    <label>A - Z</label>
+                                    <div class="clear"></div>
+                                </div>
+                            </a>
+                            <a class="secondary content-header-btn{% if sort == '-title' %} active{% endif %}" href="{% url 'grab_youtube.grab.views.user_detail' profile.slug %}?filter={{ filter }}&sort=-title">
+                                <div class="label-with-icon">
+                                    <i class="icon-arrow-down2"></i>
+                                    <label>Z - A</label>
+                                    <div class="clear"></div>
+                                </div>
+                            </a>
+                            <a class="secondary content-header-btn{% if sort == 'shared_at' %} active{% endif %}" href="{% url 'grab_youtube.grab.views.user_detail' profile.slug %}?filter={{ filter }}&sort=shared_at">
+                                <div class="label-with-icon">
+                                    <i class="icon-arrow-up2"></i>
+                                    <label>Date</label>
+                                    <div class="clear"></div>
+                                </div>
+                            </a>
+                            <a class="secondary content-header-btn{% if sort == '-shared_at' %} active{% endif %}" href="{% url 'grab_youtube.grab.views.user_detail' profile.slug %}?filter={{ filter }}&sort=-shared_at">
+                                <div class="label-with-icon">
+                                    <i class="icon-arrow-down2"></i>
+                                    <label>Date</label>
+                                    <div class="clear"></div>
+                                </div>
+                            </a>
+{#                            <a class="secondary content-header-btn{% if sort == '-shared_at' %} active{% endif %}" href="{% url 'grab_youtube.grab.views.user_detail' profile.slug %}?filter={{ filter }}&sort=-shared_at">#}
+{#                                <div class="label-with-icon">#}
+{#                                    <i class="icon-arrow-down2"></i>#}
+{#                                    <label>Score</label>#}
+{#                                    <div class="clear"></div>#}
+{#                                </div>#}
+{#                            </a>#}
+                            <div class="clear"></div>
+                        </span>
+                    </div>
+
+                {% endif %}
+            </div>
+
+{#            <div class="video-search">#}
+{#                <input type="text" id="search-input" placeholder="Search videos...">#}
+{#            </div>#}
+
+            <div class="videos">
+                {% autopaginate videos 20 %}
+                <div class="videos-content">
+                    {% for video in videos %}
+                        <div class="video" data-embed-url="{{ video.embed_url }}" data-title="{{ video.title }}">
+                            <a class="thumbnail" href="javascript:"{% if video.get_thumbnail_url %} style="background-image: url({{ video.get_thumbnail_url }})"{% endif %}></a>
+                            <div class="clear"></div>
+                            <div class="details">
+                                <a class="title" href="{{ video.get_absolute_url }}" title="{{ video.title }}">{% if video in profile_ratings.items %}yes{% endif %}{{ video.title }}</a>
+                                <div class="date">
+                                    {% include 'label_with_icon.html' with icon=video.privacy_icon label=video.shared_at|date:'M d Y' %}
+                                </div>
+                                <div class="video-rating" data-rate-url="{% url 'grab_youtube.grab.views.rate_video' video.id %}">
+                                    <div class="video-rating-btn rating-heart{% if request.profile == profile %} disabled{% endif %}{% if video.id in profile_hearts %} selected{% endif %}" data-rating="heart">
+                                        {% include 'label_with_icon.html' with icon='heart rating-icon' label=video.get_rating.0 %}
+                                    </div>
+                                    <div class="video-rating-btn rating-poo{% if request.profile == profile %} disabled{% endif %}{% if video.id in profile_poos %} selected{% endif %}" data-rating="poo">
+                                        {% include 'label_with_icon.html' with icon='poo rating-icon' label=video.get_rating.1 %}
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="clear"></div>
+                <div class="hidden-videos" style="display:none;"></div>
+                {% paginate %}
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="video-loader"></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,9 @@
+<div id="pagination">
+    {% if is_paginated %}
+        {% if page_obj.has_next %}
+            <div id="next-page" style="display: none"
+                 data-next-url="?page={{ page_obj.next_page_number }}{{ getvars }}{{ hashtag }}">
+            </div>
+        {% endif %}
+    {% endif %}
+</div>

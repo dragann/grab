@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+
+{% load static %}
+
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="{% static 'css/grab.css' %}" type="text/css" rel="stylesheet" />
+    <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" />
+    <script src="{% static 'js/grab.js' %}"></script>
+    {% block extrahead %}{% endblock %}
+    <script>
+        {% if request.profile %}
+            PROFILE_SLUG = '{{ request.profile.slug }}';
+        {% else %}
+            PROFILE_SLUG = null;
+        {% endif %}
+    </script>
+</head>
+
+<body>
+
+<div class="main-header">
+</div>
+
+
+{% block sidebar %}
+<div id="sidebar-wrapper">
+
+    <div class="sidebar">
+        <ul>
+            <li class="menu-header">
+                <img src="{{ request.profile.avatar_url_large }}"/><div class="profile-name">{{ request.profile.name }}</div>
+            </li>
+            <li class="divider"></li>
+            <li id="videos-menu-item" class="menu-item">
+                <a href="{% url 'grab_youtube.grab.views.user_detail' request.profile.slug %}">
+                    {% include 'label_with_icon.html' with icon='youtube' label='Videos' %}
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li id="friends-menu-item" class="menu-item">
+                <a href="{% url 'grab_youtube.grab.views.friends_list' request.profile.slug %}">
+                    {% include 'label_with_icon.html' with icon='users' label='People' %}
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li id="settings-menu-item" class="menu-item">
+                <a href="{% url 'grab_youtube.grab.views.profile_settings' request.profile.slug %}">
+                    {% include 'label_with_icon.html' with icon='cog' label='Settings' %}
+                {% if alert_settings %}<div class="menu-alert-badge icon-exclamation-circle"></div>{% endif %}
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="menu-item">
+                <a href="{% url 'django.contrib.auth.views.logout_then_login' %}">
+                    {% include 'label_with_icon.html' with icon='exit' label='Logout' %}
+                </a>
+            </li>
+            <li class="divider"></li>
+{#            {% url "social:disconnect" "facebook" %}#}
+        </ul>
+    </div>
+{#    <i class="app-logo icon-fish-color">#}
+{#        <span class="path1"></span>#}
+{#        <span class="path2"></span>#}
+{#        <span class="path3"></span>#}
+{#        <span class="path5"></span>#}
+{#        <span class="path6"></span>#}
+{#        <span class="path4"></span>#}
+{#    </i>#}
+{#    <i class="app-logo icon-fish"></i>#}
+{#    <i class="app-logo icon-fish-o"></i>#}
+    <i class="app-logo icon-contrast-thin"></i>
+</div>
+{% endblock %}
+
+<div id="content-wrapper">
+    <div class="container page-header">
+        {% block page_header %}{% endblock %}
+    </div>
+
+    <div class="container content">
+        <div id="alert-wrapper" class="keep-alert">
+            <div class="alert">
+                {% block alert %}{% endblock %}
+                <div class="alert-icon clear-alert-btn icon-times-circle"></div>
+            </div>
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>
