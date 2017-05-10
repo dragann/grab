@@ -19,6 +19,7 @@ from grab_youtube import settings
 from grab_youtube.account.forms import PasswordForm
 from grab_youtube.account.models import Profile
 from grab_youtube.grab.middleware import ForbiddenException
+from grab_youtube.grab.utils import render_to_json
 from grab_youtube.videos.models import YoutubeVideo, VideoRating
 
 
@@ -316,15 +317,20 @@ def profile_settings(request, slug):
     if request.method == 'POST':
         if has_password:
             password_form = PasswordChangeForm(user, request.POST)
+            message = 'Your password was changed'
         else:
             password_form = SetPasswordForm(user, request.POST)
+            message = 'Your password was set'
+
         if password_form.is_valid():
             password = password_form.cleaned_data['new_password1']
             password_form.save()
             user = authenticate(username=user.email, password=password)
             auth_login(request, user)
 
-            return redirect(profile_settings, slug)
+            return render_to_json({'success': message})
+
+        return render_to_json({'errors': password_form.errors})
 
     else:
         if has_password:
@@ -332,7 +338,8 @@ def profile_settings(request, slug):
         else:
             password_form = SetPasswordForm(user)
 
-    return render(request, 'profile_settings.html', locals())
+    return render(request, 'settings.html', locals())
+
 
 @login_required()
 def delete_user(request, slug):

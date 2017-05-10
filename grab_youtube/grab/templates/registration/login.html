@@ -27,8 +27,11 @@
 
         #app-logo {
             font-size: 40px;
-            color: #ff6f00;
             margin-bottom: 40px
+        }
+
+        #app-logo a {
+            color: #ff6f00;
         }
 
         #fb-login-btn {
@@ -100,7 +103,7 @@
 
 <div id="login-wrapper">
     <div id="app-logo">
-        <i class="icon-contrast"></i>
+        <a href="{% url 'home' %}"><i class="icon-contrast"></i></a>
     </div>
 
     <form id="login-form" method="post">

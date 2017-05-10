@@ -26,5 +26,4 @@ def save_profile(user, **kwargs):
     for friend in friends:
         profile.friends.add(friend)
 
-
     return {'profile': profile}

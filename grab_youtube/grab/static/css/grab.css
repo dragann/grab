@@ -735,6 +735,11 @@ form input.error-field {
     border-color: #ff6f00;
 }
 
+.form-error {
+    color: #ff6f00;
+    margin: -10px 0 15px 0;
+}
+
 .hidden {
     display: none;
 }
@@ -748,4 +753,13 @@ form input.error-field {
     right: 10px;
     top: 16px;
     font-size: 16px;
+}
+
+.radio {
+    display: block;
+    font-size: 14px;
+}
+
+.radio input[type=radio] {
+    margin: 0 10px 0 0;
 }

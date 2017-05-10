@@ -270,30 +270,93 @@ $ ->
     $('body').on 'click', '.delete-account-btn', (e) ->
         $('.content-header-btn').removeClass('active')
         $(e.currentTarget).addClass('active')
-        showAlert('So this is how it all ends?&nbsp;&nbsp;<i class="icon-heart-broken"></i>',
+        showAlert('So... this is how it all ends?&nbsp;&nbsp;<i class="icon-heart-broken"></i><br/>
+            <label class="delete-account-radio radio">
+                <input type="radio" name="deleteAccount" value="disable" checked="checked">disable account and keep the synced data
+            </label>
+            <label class="radio">
+                <input type="radio" name="deleteAccount" value="delete">delete account and all the data
+            </label>
+        ',
         '
             <div class="alert-buttons">
-                <button class="btn confirm-account-delete" data-action="delete" title="Delete account and all your data">Delete Account</button>
-                <button class="btn confirm-account-disable" data-action="disable" title="Make account inactive and keep all your data">Disable Account</button>
+                <button class="btn confirm-account-delete">Yes, Proceed</button>
                 <button class="btn cancel-account-delete">No</button>
             </div>
         ')
     $('body').on 'click', '.confirm-account-delete', ->
-        $.post URLS.delete_account + '?action=delete', ->
-            window.location = URLS.login
-    $('body').on 'click', '.confirm-account-disable', ->
-        $.post URLS.delete_account + '?action=disable', ->
+        $.post URLS.delete_account + '?action=' + $('input[name="deleteAccount"]:checked').attr('value'), ->
             window.location = URLS.login
     $('body').on 'click', '.cancel-account-delete', ->
         $('.delete-account-btn').removeClass('active')
-        showAlert('We knew you were just fooling around&nbsp;&nbsp;<i class="icon-heart"></i>', '', true)
+        showAlert('A-ha! We knew you were just fooling around&nbsp;&nbsp;<i class="icon-heart"></i>', '', true)
     $('body').on 'click', '.delete-account-btn.active', (e) ->
         $(e.currentTarget).removeClass('active')
         hideAlert()
     # /end delete account
 
+    # show/hide forms
+    $('body').on 'click', '.show-form:not(".open")', (e) ->
+        $(e.currentTarget).addClass('open')
+        $(e.currentTarget).find('i').removeClass().addClass('icon-caret-up')
+        $(e.currentTarget).next('form').removeClass('hidden').show()
+
+    $('body').on 'click', '.show-form.open', (e) ->
+        $form = $(e.currentTarget).next('form')
+        hideForm($form)
+    # /end show/hide forms
+
+
+    # password forms
+    $('body').on 'keyup keypress', ('.password-form'), (e) ->
+        keyCode = e.keyCode or e.which
+        if keyCode == 13
+            e.preventDefault()
+            return false
+
+    $('body').on 'click', ('.submit-password-form-btn'), (e) ->
+        e.preventDefault()
+        $form = $(e.target).parents('form')
+        hideFormErrors($form)
+        $form.submit(
+            $.ajax
+                url: $form.attr('action')
+                type: 'POST'
+                data: $form.serializeArray()
+                success: (response) ->
+                    if response.errors
+                        showFormErrors(response.errors, $form)
+                    if response.success
+                        showAlert(response.success, '', true)
+                        hideForm($form)
+        )
+    # /end password forms
+
 
     # util functions
+    showFormErrors = (errors, form) ->
+        for errorField, errorText of errors
+            $(form).find('input[name="'+ errorField + '"]').addClass('error-field').select()
+            $(form).find('[data-for-field="'+ errorField + '"]').text(errorText)
+
+
+    hideFormErrors = (form) ->
+        $(form).find('.form-error').text('')
+        $(form).find('input').removeClass('error-field')
+
+
+    hideForm = (form) ->
+        if $(form).hasClass('set-password-form')
+            $(form).parents('.settings-section-content').remove()
+            return false
+        $(form).addClass('hidden').hide()
+        $(form).prev().removeClass('open')
+        $(form).prev().find('i').removeClass().addClass('icon-caret-down')
+        $(form).find('.form-error').text('')
+        $(form).find('input').removeClass('error-field')
+        $(form)[0].reset()
+
+
     repositionPlayer = (player) ->
         $(window).on 'scroll', =>
             playerTop = $(player).offset().top

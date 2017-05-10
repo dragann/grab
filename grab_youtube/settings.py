@@ -118,7 +118,10 @@ USE_TZ = True
 SOCIAL_AUTH_FACEBOOK_KEY = ''
 SOCIAL_AUTH_FACEBOOK_SECRET = ''
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_friends', 'user_posts']
+SOCIAL_AUTH_ALWAYS_ASSOCIATE = True
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'user_detail'
+
+from local_settings import *
