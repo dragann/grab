@@ -15,13 +15,15 @@
 {% endblock %}
 
 {% block page_header %}
-    {% include 'label_with_icon.html' with icon='cog' label='Your Settings' extra='style="color: dodgerblue"' %}
+    {% include 'label_with_icon_fragment.html' with icon='cog' label='Your Settings' extra='style="color: dodgerblue"' %}
 {% endblock %}
 
 {% block content %}
+    {% include 'settings_alert_fragment.html' %}
+
     <div class="settings-section">
         <div class="content-header">
-            {% include 'label_with_icon.html' with icon='user' label='PROFILE' %}
+            {% include 'label_with_icon_fragment.html' with icon='user' label='PROFILE' %}
         </div>
         <div class="settings-section-content">
         </div>
@@ -29,8 +31,8 @@
     </div>
     <div class="settings-section">
         <div class="content-header">
-            {% include 'label_with_icon.html' with icon='contrast' label='ACCOUNT' extra='style="font-size: 11px;"' %}
-            {% include 'label_with_icon.html' with label=profile.user.email label_extra='style="color:#ccc"' %}
+            {% include 'label_with_icon_fragment.html' with icon='contrast' label='ACCOUNT' extra='style="font-size: 11px;"' %}
+            {% include 'label_with_icon_fragment.html' with label=profile.user.email label_extra='style="color:#ccc"' %}
             <a class="delete-account-btn content-header-btn" href="javascript:"><i class="icon-trash"></i></a>
         </div>
 
@@ -43,7 +45,7 @@
                 <a class="show-form" href="javascript:">Change password&nbsp;&nbsp;<i class="icon-caret-down"></i></a>
             {% else %}
                 <div class="alert">
-                    {% include 'label_with_icon.html' with label="You haven't set a password for your account yet" icon="exclamation-circle" extra='style="color: red"' %}
+                    {% include 'label_with_icon_fragment.html' with label="You haven't set a password for your account yet" icon="exclamation-circle" extra='style="color: red"' %}
                 </div>
                 Choose password
             {% endif %}
@@ -69,12 +71,5 @@
             </form>
         </div>
         <div class="clear"></div>
-
-{#        <div class="settings-section-content">#}
-{#        <a href="{% url 'grab_youtube.grab.views.delete_user' profile.slug %}">#}
-{#            Delete Account#}
-{#        </a>#}
-{#        </div>#}
-{#        <div class="clear"></div>#}
     </div>
 {% endblock %}

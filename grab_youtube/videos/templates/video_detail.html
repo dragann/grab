@@ -16,23 +16,14 @@
     </div>
 {% endblock %}
 
-{% block alert %}
-    {% if video.archived_at %}
-    <div class="alert-text">
-        This video is archived. It will not show up in your video list.
-    </div>
-    <div class="alert-buttons">
-        <button class="btn restore-video-btn">Restore</button>
-    </div>
-    {% endif %}
-{% endblock %}
-
 {% block content %}
     <div id="video-detail" data-video-id="{{ video.id }}">
+        {% include 'video_detail_alert_fragment.html' %}
+
         <div class="content-header top-border">
             {% if back_url %}
                 <a href="{{ back_url }}">
-                    {% include 'label_with_icon.html' with icon='arrow-left2' label='back' %}
+                    {% include 'label_with_icon_fragment.html' with icon='arrow-left2' label='back' %}
                 </a>
             {% endif %}
             {% if video.profile == request.profile and not video.archived_at %}

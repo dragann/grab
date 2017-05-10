@@ -1,14 +1,9 @@
 {% extends 'base.html' %}
 
 {% block page_header %}
-    {% include 'label_with_icon.html' with icon='poo' label='Crap...' extra='style="color: #927356"' %}
+    {% include 'label_with_icon_fragment.html' with icon='poo' label='Crap...' extra='style="color: #927356"' %}
 {% endblock %}
 
-{% block alert %}
-    <div class="alert-text">
-        You are not allowed to view this page, sorry
-    </div>
-    {% if message.back_url %}
-        <a href="{{ message.back_url }}">back</a>
-    {% endif %}
+{% block content %}
+    {% include 'forbidden_alert_fragment.html' %}
 {% endblock %}

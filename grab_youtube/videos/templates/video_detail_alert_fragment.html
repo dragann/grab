@@ -1,0 +1,12 @@
+{% extends 'alert_fragment.html' %}
+
+{% block alert %}
+    {% if video.archived_at %}
+        <div class="alert-text">
+            This video is archived. It will not show up in your video list.
+        </div>
+        <div class="alert-buttons">
+            <button class="btn restore-video-btn">Restore</button>
+        </div>
+    {% endif %}
+{% endblock %}

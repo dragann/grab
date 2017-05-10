@@ -1,0 +1,9 @@
+{% extends 'alert_fragment.html' %}
+
+{% block alert %}
+    {% if not profile.synced_at %}
+        <div class="alert-text">
+            It seems that you don't have any synchronized videos.<br/>Go ahead and click on that shiny orange button on the top-right of the page <3
+        </div>
+    {% endif %}
+{% endblock %}

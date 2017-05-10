@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load pagination_tags %}
+{% load static %}
 
 {% block extrahead %}
 {#    <script src="https://www.youtube.com/iframe_api"></script>#}
@@ -19,9 +20,9 @@
 
 {% block page_header %}
     {% if profile == request.profile %}
-        {% include 'label_with_icon.html' with icon='youtube' label='Your Videos' extra='style="color: red"' %}
+        {% include 'label_with_icon_fragment.html' with icon='youtube' label='Your Videos' extra='style="color: red"' %}
     {% else %}
-        {% include 'label_with_icon.html' with icon='youtube' label=profile.name|add:"'s Videos" extra='style="color: red"' %}
+        {% include 'label_with_icon_fragment.html' with icon='youtube' label=profile.name|add:"'s Videos" extra='style="color: red"' %}
     {% endif %}
     <div class="sync-date">
         {% if profile == request.profile %}
@@ -35,16 +36,11 @@
     </div>
 {% endblock %}
 
-{% block alert %}
-    {% if not profile.synced_at %}
-        <div class="alert-text">
-            It seems that you don't have any synchronized videos.<br/>Go ahead and click on that shiny orange button on the top-right of the page <3
-        </div>
-    {% endif %}
-{% endblock %}
 
 {% block content %}
     <div id="video-list">
+        {% include 'video_list_alert_fragment.html' %}
+
         <div id="video-list-content">
 
             <div class="content-header{% if videos %} top-border{% endif %}">
@@ -129,14 +125,14 @@
                             <div class="details">
                                 <a class="title" href="{{ video.get_absolute_url }}" title="{{ video.title }}">{% if video in profile_ratings.items %}yes{% endif %}{{ video.title }}</a>
                                 <div class="date">
-                                    {% include 'label_with_icon.html' with icon=video.privacy_icon label=video.shared_at|date:'M d Y' %}
+                                    {% include 'label_with_icon_fragment.html' with icon=video.privacy_icon label=video.shared_at|date:'M d Y' %}
                                 </div>
                                 <div class="video-rating" data-rate-url="{% url 'grab_youtube.grab.views.rate_video' video.id %}">
                                     <div class="video-rating-btn rating-heart{% if request.profile == profile %} disabled{% endif %}{% if video.id in profile_hearts %} selected{% endif %}" data-rating="heart">
-                                        {% include 'label_with_icon.html' with icon='heart rating-icon' label=video.get_rating.0 %}
+                                        {% include 'label_with_icon_fragment.html' with icon='heart rating-icon' label=video.get_rating.0 %}
                                     </div>
                                     <div class="video-rating-btn rating-poo{% if request.profile == profile %} disabled{% endif %}{% if video.id in profile_poos %} selected{% endif %}" data-rating="poo">
-                                        {% include 'label_with_icon.html' with icon='poo rating-icon' label=video.get_rating.1 %}
+                                        {% include 'label_with_icon_fragment.html' with icon='poo rating-icon' label=video.get_rating.1 %}
                                     </div>
                                     <div class="clear"></div>
                                 </div>
@@ -152,4 +148,8 @@
         </div>
         <div class="video-loader"></div>
     </div>
+{% endblock %}
+
+{% block extrabody %}
+    <script src="{% static 'js/video_list.js' %}"></script>
 {% endblock %}

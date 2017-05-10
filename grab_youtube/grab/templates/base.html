@@ -40,26 +40,26 @@
             <li class="divider"></li>
             <li id="videos-menu-item" class="menu-item">
                 <a href="{% url 'grab_youtube.grab.views.user_detail' request.profile.slug %}">
-                    {% include 'label_with_icon.html' with icon='youtube' label='Videos' %}
+                    {% include 'label_with_icon_fragment.html' with icon='youtube' label='Videos' %}
                 </a>
             </li>
             <li class="divider"></li>
             <li id="friends-menu-item" class="menu-item">
                 <a href="{% url 'grab_youtube.grab.views.friends_list' request.profile.slug %}">
-                    {% include 'label_with_icon.html' with icon='users' label='People' %}
+                    {% include 'label_with_icon_fragment.html' with icon='users' label='People' %}
                 </a>
             </li>
             <li class="divider"></li>
             <li id="settings-menu-item" class="menu-item">
                 <a href="{% url 'grab_youtube.grab.views.profile_settings' request.profile.slug %}">
-                    {% include 'label_with_icon.html' with icon='cog' label='Settings' %}
+                    {% include 'label_with_icon_fragment.html' with icon='cog' label='Settings' %}
                 {% if alert_settings %}<div class="menu-alert-badge icon-exclamation-circle"></div>{% endif %}
                 </a>
             </li>
             <li class="divider"></li>
             <li class="menu-item">
                 <a href="{% url 'django.contrib.auth.views.logout_then_login' %}">
-                    {% include 'label_with_icon.html' with icon='exit' label='Logout' %}
+                    {% include 'label_with_icon_fragment.html' with icon='exit' label='Logout' %}
                 </a>
             </li>
             <li class="divider"></li>
@@ -86,15 +86,17 @@
     </div>
 
     <div class="container content">
-        <div id="alert-wrapper" class="keep-alert">
-            <div class="alert">
-                {% block alert %}{% endblock %}
-                <div class="alert-icon clear-alert-btn icon-times-circle"></div>
-            </div>
-        </div>
+{#        <div id="alert-wrapper" class="keep-alert">#}
+{#            <div class="alert">#}
+{#                {% block alert %}{% endblock %}#}
+{#                <div class="alert-icon clear-alert-btn icon-times-circle"></div>#}
+{#            </div>#}
+{#        </div>#}
         {% block content %}
         {% endblock %}
     </div>
 </div>
+
+{% block extrabody %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,10 @@
+{% extends 'alert_fragment.html' %}
+
+{% block alert %}
+    <div class="alert-text">
+        You are not allowed to view this page, sorry
+    </div>
+    {% if message.back_url %}
+        <a href="{{ message.back_url }}">back</a>
+    {% endif %}
+{% endblock %}
