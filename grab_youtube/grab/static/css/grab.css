@@ -423,7 +423,7 @@ a.disabled:hover, a.disabled:hover label {
     width: 100%;
     display: block;
     border-radius: 3px;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
     overflow: hidden;
 }
 
@@ -762,4 +762,43 @@ form input.error-field {
 
 .radio input[type=radio] {
     margin: 0 10px 0 0;
+}
+
+#page-stats {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #456;
+    color: #ccc;
+    padding: 1px 15px 1px 5px;
+    border-bottom-left-radius: 4px;
+    font-size: 9px;
+    opacity: 0.4;
+    z-index: 10000;
+    cursor: default;
+}
+
+#page-stats span {
+    font-size: 12px;
+    color: #fff;
+}
+
+#page-stats:hover {
+    opacity: 1;
+}
+
+#page-stats .stats-total {
+    color: #ad4;
+}
+
+#page-stats .stats-python {
+    color: #ee8;
+}
+
+#page-stats .stats-db {
+    color: #8df;
+}
+
+#page-stats .stats-total .stats-over {
+    color: #f88;
 }

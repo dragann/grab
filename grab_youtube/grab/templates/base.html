@@ -5,9 +5,11 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{% static 'js/underscore.js' %}"></script>
+    <script src="{% static 'js/backbone.js' %}"></script>
+    <script src="{% static 'js/grab.js' %}"></script>
     <link href="{% static 'css/grab.css' %}" type="text/css" rel="stylesheet" />
     <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" />
-    <script src="{% static 'js/grab.js' %}"></script>
     {% block extrahead %}{% endblock %}
     <script>
         {% if request.profile %}
@@ -16,6 +18,9 @@
             PROFILE_SLUG = null;
         {% endif %}
     </script>
+    {% if request.summary_stats %}
+        <div id="page-stats"><!-- STATS: <span class="stats-total">%(totTime)s</span> server &middot; <span class="stats-python">%(pyTime)dms</span> python &middot; <span class="stats-db">%(dbTime)dms</span> / <span>%(queries)d</span> sql --></div>
+    {% endif %}
 </head>
 
 <body>
