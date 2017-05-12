@@ -3914,7 +3914,7 @@
 	height: 1em;
 	line-height: 1;
 	margin-right: 0.8em;
-	animation: anim-rotate 2s infinite linear;
+	animation: anim-rotate 1.4s infinite linear;
 }
 
 .spinner--steps {

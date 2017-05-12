@@ -5,33 +5,33 @@ $ ->
             xhr.setRequestHeader "X-CSRFToken", getCookie('csrftoken')
 
     # alert
-    showAlert = (message, buttons, showCloseBtn) ->
-        if message != ''
-            if showCloseBtn? and showCloseBtn is true
-                $('#alert-wrapper .clear-alert-btn').show()
-            else
-                $('#alert-wrapper .clear-alert-btn').hide()
+#    showAlert = (message, buttons, showCloseBtn) ->
+#        if message != ''
+#            if showCloseBtn? and showCloseBtn is true
+#                $('#alert-wrapper .clear-alert-btn').show()
+#            else
+#                $('#alert-wrapper .clear-alert-btn').hide()
+#
+#            if $('#alert-wrapper .alert-text').length == 0
+#                $('#alert-wrapper .alert').append('<div class="alert-text"></div>')
+#
+#            $('#alert-wrapper .alert-text').html(message)
+#
+#            if $('#alert-wrapper .alert-buttons').length > 0 and not $('#alert-wrapper').hasClass('keep-alert')
+#                $('#alert-wrapper .alert-buttons').remove()
+#            $('#alert-wrapper .alert').append(buttons)
+#
+#        if $('#alert-wrapper .alert-text').length > 0 and $.trim($('#alert-wrapper .alert-text').html()) != ''
+#            $('#alert-wrapper').removeClass('keep-alert').show()
+#
+#    hideAlert = ->
+#        $('#alert-wrapper').hide()
+#        $('#alert-wrapper .alert-text').html('')
+#        $('#alert-wrapper .alert-buttons').remove()
+#    /end alert
 
-            if $('#alert-wrapper .alert-text').length == 0
-                $('#alert-wrapper .alert').append('<div class="alert-text"></div>')
 
-            $('#alert-wrapper .alert-text').html(message)
-
-            if $('#alert-wrapper .alert-buttons').length > 0 and not $('#alert-wrapper').hasClass('keep-alert')
-                $('#alert-wrapper .alert-buttons').remove()
-            $('#alert-wrapper .alert').append(buttons)
-
-        if $('#alert-wrapper .alert-text').length > 0 and $.trim($('#alert-wrapper .alert-text').html()) != ''
-            $('#alert-wrapper').removeClass('keep-alert').show()
-
-    hideAlert = ->
-        $('#alert-wrapper').hide()
-        $('#alert-wrapper .alert-text').html('')
-        $('#alert-wrapper .alert-buttons').remove()
-    # /end alert
-
-
-    showAlert()
+#    showAlert()
 
 
     # search filter
@@ -66,8 +66,8 @@ $ ->
     # /search filter
 
 
-    $('.clear-alert-btn').on 'click', ->
-        hideAlert()
+#    $('.clear-alert-btn').on 'click', ->
+#        hideAlert()
 
 
     # tooltip
@@ -78,43 +78,43 @@ $ ->
 
 
     # sync videos
-    $('.sync-btn').on 'click', (e) =>
-        $(e.target).removeClass('active').attr('disabled', 'disabled').text('Syncing')
-        $(e.target).addClass('busy')
-        showAlert('<i class="spinner icon-spinner2"></i>Retrieving YouTube videos from your Facebook timeline...')
-        $.get URLS.sync_videos, (response) ->
-            $('.date.faded').text('Synced just now')
-            $(e.target).removeClass('busy').prop('disabled', '').text('Sync Videos')
-
-            if response > 0
-                $('#video-list').load window.location.pathname + " #video-list-content"
-                showAlert(response + ' new videos found and synced', '', true)
-            else
-                showAlert('No new videos were found', '', true)
+#    $('.sync-btn').on 'click', (e) =>
+#        $(e.target).removeClass('active').attr('disabled', 'disabled').text('Syncing')
+#        $(e.target).addClass('busy')
+#        showAlert('<i class="spinner icon-contrast"></i>Retrieving YouTube videos from your Facebook timeline...')
+#        $.get URLS.sync_videos, (response) ->
+#            $('.date.faded').text('Synced just now')
+#            $(e.target).removeClass('busy').prop('disabled', '').text('Sync Videos')
+#
+#            if response > 0
+#                $('#video-list').load window.location.pathname + " #video-list-content"
+#                showAlert(response + ' new videos found and synced', '', true)
+#            else
+#                showAlert('No new videos were found', '', true)
     # /end sync videos
 
 
     # delete videos
-    $('body').on 'click', '.delete-all-btn', (e) ->
-        $('.content-header-btn').not('.secondary').removeClass('active')
-        $(e.currentTarget).addClass('active')
-        showAlert('Delete all your synced videos?',
-        '
-            <div class="alert-buttons">
-                <button class="btn confirm-delete">Yes</button><button class="btn cancel-delete">No</button>
-            </div>
-        ')
-    $('body').on 'click', '.confirm-delete', ->
-        $.get URLS.delete_videos, (response) ->
-            $('.sync-btn').addClass('active')
-            $('.date.faded').text('')
-            window.location.href = URLS.video_list
-    $('body').on 'click', '.cancel-delete', ->
-        $('.delete-all-btn').removeClass('active')
-        hideAlert()
-    $('body').on 'click', '.delete-all-btn.active', (e) ->
-        $(e.currentTarget).removeClass('active')
-        hideAlert()
+#    $('body').on 'click', '.delete-all-btn', (e) ->
+#        $('.content-header-btn').not('.secondary').removeClass('active')
+#        $(e.currentTarget).addClass('active')
+#        showAlert('Delete all your synced videos?',
+#        '
+#            <div class="alert-buttons">
+#                <button class="btn confirm-delete">Yes</button><button class="btn cancel-delete">No</button>
+#            </div>
+#        ')
+#    $('body').on 'click', '.confirm-delete', ->
+#        $.get URLS.delete_videos, (response) ->
+#            $('.sync-btn').addClass('active')
+#            $('.date.faded').text('')
+#            window.location.href = URLS.video_list
+#    $('body').on 'click', '.cancel-delete', ->
+#        $('.delete-all-btn').removeClass('active')
+#        hideAlert()
+#    $('body').on 'click', '.delete-all-btn.active', (e) ->
+#        $(e.currentTarget).removeClass('active')
+#        hideAlert()
     # /end delete videos
 
 
@@ -183,7 +183,7 @@ $ ->
         $embedUrl = $video.data('embed-url') + '?autoplay=1'
         top = $video.offset().top
         $video.append('<i class="player-open arrow icon-caret-up"></i>')
-        while top == $video.next().offset().top
+        while $video.next().hasClass('video') and top == $video.next().offset().top
             $video = $video.next()
             top = $video.offset().top
 
@@ -191,7 +191,9 @@ $ ->
             <div id="video-container">
                 <i class="icon-times close-btn"></i>
                 <div class="player-title ellipsize">' + $title + '</div>
-                <iframe class="video-player" width="100%" height="480px" src="' + $embedUrl + '" frameborder="0" allowfullscreen></iframe>
+                <div class="auto-resizable-iframe">
+                    <div><iframe type="text/html" class="video-player" src="' + $embedUrl + '" frameborder="0" allowfullscreen></iframe></div>
+                </div>
                 <div class="clear"></div>
             </div>
         ')
@@ -221,7 +223,7 @@ $ ->
         if @wscroll > @dh
             if @nextUrl
                 @stopScroll = true
-                $('.video-loader').html('<i class="icon-spinner2 spinner"></i>')
+                $('.video-loader').html('<i class="icon-contrast spinner"></i>')
                 $.get @nextUrl, (response) =>
                     $(response).find('.video').each (idx, el) =>
                         $('.videos-content').append($(el))

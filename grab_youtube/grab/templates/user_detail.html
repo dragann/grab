@@ -33,13 +33,14 @@
                 Synced {{ profile.synced_at|timesince }} ago
             {% endif %}
         </div>
+        <div class="clear"></div>
     </div>
 {% endblock %}
 
 
 {% block content %}
+    {% include 'video_list_alert_fragment.html' %}
     <div id="video-list">
-        {% include 'video_list_alert_fragment.html' %}
 
         <div id="video-list-content">
 
@@ -97,13 +98,6 @@
                                     <div class="clear"></div>
                                 </div>
                             </a>
-{#                            <a class="secondary content-header-btn{% if sort == '-shared_at' %} active{% endif %}" href="{% url 'grab_youtube.grab.views.user_detail' profile.slug %}?filter={{ filter }}&sort=-shared_at">#}
-{#                                <div class="label-with-icon">#}
-{#                                    <i class="icon-arrow-down2"></i>#}
-{#                                    <label>Score</label>#}
-{#                                    <div class="clear"></div>#}
-{#                                </div>#}
-{#                            </a>#}
                             <div class="clear"></div>
                         </span>
                     </div>
@@ -151,5 +145,6 @@
 {% endblock %}
 
 {% block extrabody %}
-    <script src="{% static 'js/video_list.js' %}"></script>
+    <script src="{% static 'js/alert-view.js' %}"></script>
+    <script src="{% static 'js/video-list-view.js' %}"></script>
 {% endblock %}
