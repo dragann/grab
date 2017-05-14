@@ -20,6 +20,15 @@ THUMBNAIL_KVSTORE = 'sorl.thumbnail.kvstores.redis_kvstore.KVStore'
 THUMBNAIL_STORAGE = 'django.core.files.storage.FileSystemStorage'
 THUMBNAIL_URL_TIMEOUT = 10
 
+CACHES = {
+   'default': {
+       # 'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+       'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+       'LOCATION': 'redis://127.0.0.1:6379/4',
+       'TIMEOUT': 60*60*24*30
+   }
+}
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -33,6 +42,8 @@ INSTALLED_APPS = (
     'social_django',
     'sorl.thumbnail',
     'bootstrap_pagination',
+    'cache_tagging.django_cache_tagging',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,8 +67,7 @@ ROOT_URLCONF = 'grab_youtube.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +79,11 @@ TEMPLATES = [
                 'social_django.context_processors.login_redirect',
                 'grab_youtube.grab.context_processors.alert_badges'
             ],
+            # 'loaders': [
+            #     ('django.template.loaders.cached.Loader', (
+            #         'django.template.loaders.app_directories.Loader',
+            #     )),
+            # ]
         },
     },
 ]

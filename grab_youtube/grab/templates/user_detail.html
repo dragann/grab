@@ -110,7 +110,7 @@
 {#            </div>#}
 
             <div class="videos">
-                {% autopaginate videos 20 %}
+                {% autopaginate videos 40 %}
                 <div class="videos-content">
                     {% for video in videos %}
                         <div class="video" data-embed-url="{{ video.embed_url }}" data-title="{{ video.title }}">
@@ -123,10 +123,10 @@
                                 </div>
                                 <div class="video-rating" data-rate-url="{% url 'grab_youtube.grab.views.rate_video' video.id %}">
                                     <div class="video-rating-btn rating-heart{% if request.profile == profile %} disabled{% endif %}{% if video.id in profile_hearts %} selected{% endif %}" data-rating="heart">
-                                        {% include 'label_with_icon_fragment.html' with icon='heart rating-icon' label=video.get_rating.0 %}
+                                        {% include 'label_with_icon_fragment.html' with icon='heart rating-icon' label=video.hearts %}
                                     </div>
                                     <div class="video-rating-btn rating-poo{% if request.profile == profile %} disabled{% endif %}{% if video.id in profile_poos %} selected{% endif %}" data-rating="poo">
-                                        {% include 'label_with_icon_fragment.html' with icon='poo rating-icon' label=video.get_rating.1 %}
+                                        {% include 'label_with_icon_fragment.html' with icon='poo rating-icon' label=video.poos %}
                                     </div>
                                     <div class="clear"></div>
                                 </div>

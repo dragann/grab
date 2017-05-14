@@ -16,9 +16,10 @@ class YoutubeVideo(models.Model):
     archived_at = models.DateTimeField(null=True, blank=True)
     post_id = models.CharField(max_length=255)
     youtube_id = models.CharField(max_length=50, null=True, blank=True)
-    position = models.PositiveIntegerField(default=0)
     thumbnail_url = models.CharField(max_length=255, null=True, blank=True)
     privacy = models.CharField(max_length=50, null=True, blank=True)
+    hearts = models.PositiveIntegerField(default=0)
+    poos = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['-shared_at',]
@@ -54,11 +55,6 @@ class YoutubeVideo(models.Model):
     def get_absolute_url(self):
         return ('grab_youtube.grab.views.video_detail', [self.id])
 
-    def get_rating(self):
-        heart = self.ratings.filter(rating='heart').count()
-        poo = self.ratings.filter(rating='poo').count()
-
-        return (heart, poo)
 
     @property
     def visibility(self):

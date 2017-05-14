@@ -88,53 +88,6 @@
     $('body').on('click', '.sort-videos-link', function(e) {
       return window.location.href = URLS.sort_url + '&sort=' + $(e.target).data('sort');
     });
-    $('body').on('click', '.thumbnail', function(e) {
-      var $embedUrl, $player, $title, $video, top;
-      $('#video-container').remove();
-      $('.player-open.arrow').remove();
-      $video = $($(e.target).parents('.video'));
-      $title = $video.find('.title').text();
-      $embedUrl = $video.data('embed-url') + '?autoplay=1';
-      top = $video.offset().top;
-      $video.append('<i class="player-open arrow icon-caret-up"></i>');
-      while ($video.next().hasClass('video') && top === $video.next().offset().top) {
-        $video = $video.next();
-        top = $video.offset().top;
-      }
-      $player = $('<div id="video-container"> <i class="icon-times close-btn"></i> <div class="player-title ellipsize">' + $title + '</div> <div class="auto-resizable-iframe"> <div><iframe type="text/html" class="video-player" src="' + $embedUrl + '" frameborder="0" allowfullscreen></iframe></div> </div> <div class="clear"></div> </div>');
-      return $video.after($player);
-    });
-    $('body').on('click', '.close-btn', function(e) {
-      $(e.target).parent().remove();
-      $('.mask').remove();
-      return $('.player-open.arrow').remove();
-    });
-    $(window).on('scroll', function() {
-      if (this.stopScroll) {
-        return false;
-      }
-      this.dh = $(document).height() - 10;
-      this.nextUrl = $('#next-page').data('next-url');
-      this.wscroll = $(window).scrollTop() + $(window).height();
-      if (this.wscroll > this.dh) {
-        if (this.nextUrl) {
-          this.stopScroll = true;
-          $('.video-loader').html('<i class="icon-contrast spinner"></i>');
-          return $.get(this.nextUrl, (function(_this) {
-            return function(response) {
-              $(response).find('.video').each(function(idx, el) {
-                return $('.videos-content').append($(el));
-              });
-              $('#pagination').html($(response).find('#pagination').html());
-              _this.stopScroll = false;
-              return $('.video-loader').html('');
-            };
-          })(this));
-        } else {
-          return this.stopScroll = true;
-        }
-      }
-    });
     $('.video-rating').on('click', function(e) {
       var $btn, $div, $icon, $label, $sibling, $siblingLabel, url;
       if (!$(e.target).hasClass('label-icon')) {

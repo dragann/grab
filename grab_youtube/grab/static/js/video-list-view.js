@@ -15,7 +15,9 @@
       'click .delete-all-btn': 'alertDeleteVideos',
       'click .delete-all-btn.active': 'cancel',
       'click .cancel-delete': 'cancel',
-      'click .sync-btn': 'syncVideos'
+      'click .sync-btn': 'syncVideos',
+      'click .thumbnail': 'showInlinePlayer',
+      'click .close-btn': 'closeInlinePlayer'
     };
 
     VideoListView.prototype.initialize = function() {
@@ -66,6 +68,28 @@
           }
         };
       })(this));
+    };
+
+    VideoListView.prototype.showInlinePlayer = function(e) {
+      var $embedUrl, $player, $title, $video, top;
+      this.$('#video-container').remove();
+      this.$('.player-open.arrow').remove();
+      $video = $($(e.target).parents('.video'));
+      $title = $video.find('.title').text();
+      $embedUrl = $video.data('embed-url') + '?autoplay=1';
+      top = $video.offset().top;
+      $video.append('<i class="player-open arrow icon-caret-up"></i>');
+      while ($video.next().hasClass('video') && top === $video.next().offset().top) {
+        $video = $video.next();
+        top = $video.offset().top;
+      }
+      $player = $('<div id="video-container"> <i class="icon-times close-btn"></i> <div class="player-title ellipsize">' + $title + '</div> <div class="auto-resizable-iframe"> <div><iframe type="text/html" class="video-player" src="' + $embedUrl + '" frameborder="0" allowfullscreen></iframe></div> </div> <div class="clear"></div> </div>');
+      return $video.after($player);
+    };
+
+    VideoListView.prototype.closeInlinePlayer = function(e) {
+      $(e.target).parent().remove();
+      return this.$('.player-open.arrow').remove();
     };
 
     return VideoListView;

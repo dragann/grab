@@ -12,11 +12,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout as auth_logout, authenticate
 from django.utils import timezone
 from social_django.models import UserSocialAuth
-from django.contrib import auth
 from django.contrib.auth import login as auth_login
 
-from grab_youtube import settings
-from grab_youtube.account.forms import PasswordForm
 from grab_youtube.account.models import Profile
 from grab_youtube.grab.middleware import ForbiddenException
 from grab_youtube.grab.utils import render_to_json
@@ -300,6 +297,10 @@ def rate_video(request, video_id):
 
     except VideoRating.DoesNotExist:
         VideoRating.objects.get_or_create(profile=request.profile, video=video, rating=rating)
+
+    video.hearts = video.ratings.filter(rating='heart').count()
+    video.poos = video.ratings.filter(rating='poo').count()
+    video.save()
 
     return HttpResponse()
 

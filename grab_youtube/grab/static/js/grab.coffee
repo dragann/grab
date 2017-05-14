@@ -4,35 +4,6 @@ $ ->
         beforeSend: (xhr, settings) =>
             xhr.setRequestHeader "X-CSRFToken", getCookie('csrftoken')
 
-    # alert
-#    showAlert = (message, buttons, showCloseBtn) ->
-#        if message != ''
-#            if showCloseBtn? and showCloseBtn is true
-#                $('#alert-wrapper .clear-alert-btn').show()
-#            else
-#                $('#alert-wrapper .clear-alert-btn').hide()
-#
-#            if $('#alert-wrapper .alert-text').length == 0
-#                $('#alert-wrapper .alert').append('<div class="alert-text"></div>')
-#
-#            $('#alert-wrapper .alert-text').html(message)
-#
-#            if $('#alert-wrapper .alert-buttons').length > 0 and not $('#alert-wrapper').hasClass('keep-alert')
-#                $('#alert-wrapper .alert-buttons').remove()
-#            $('#alert-wrapper .alert').append(buttons)
-#
-#        if $('#alert-wrapper .alert-text').length > 0 and $.trim($('#alert-wrapper .alert-text').html()) != ''
-#            $('#alert-wrapper').removeClass('keep-alert').show()
-#
-#    hideAlert = ->
-#        $('#alert-wrapper').hide()
-#        $('#alert-wrapper .alert-text').html('')
-#        $('#alert-wrapper .alert-buttons').remove()
-#    /end alert
-
-
-#    showAlert()
-
 
     # search filter
     $('#search-input').on 'keyup', (e) ->
@@ -66,56 +37,11 @@ $ ->
     # /search filter
 
 
-#    $('.clear-alert-btn').on 'click', ->
-#        hideAlert()
-
-
     # tooltip
     $('[rel="tooltip"]').on 'mouseenter', (e) ->
         $el = $(e.target)
         text = $el.attr('title')
     # /end tooltip
-
-
-    # sync videos
-#    $('.sync-btn').on 'click', (e) =>
-#        $(e.target).removeClass('active').attr('disabled', 'disabled').text('Syncing')
-#        $(e.target).addClass('busy')
-#        showAlert('<i class="spinner icon-contrast"></i>Retrieving YouTube videos from your Facebook timeline...')
-#        $.get URLS.sync_videos, (response) ->
-#            $('.date.faded').text('Synced just now')
-#            $(e.target).removeClass('busy').prop('disabled', '').text('Sync Videos')
-#
-#            if response > 0
-#                $('#video-list').load window.location.pathname + " #video-list-content"
-#                showAlert(response + ' new videos found and synced', '', true)
-#            else
-#                showAlert('No new videos were found', '', true)
-    # /end sync videos
-
-
-    # delete videos
-#    $('body').on 'click', '.delete-all-btn', (e) ->
-#        $('.content-header-btn').not('.secondary').removeClass('active')
-#        $(e.currentTarget).addClass('active')
-#        showAlert('Delete all your synced videos?',
-#        '
-#            <div class="alert-buttons">
-#                <button class="btn confirm-delete">Yes</button><button class="btn cancel-delete">No</button>
-#            </div>
-#        ')
-#    $('body').on 'click', '.confirm-delete', ->
-#        $.get URLS.delete_videos, (response) ->
-#            $('.sync-btn').addClass('active')
-#            $('.date.faded').text('')
-#            window.location.href = URLS.video_list
-#    $('body').on 'click', '.cancel-delete', ->
-#        $('.delete-all-btn').removeClass('active')
-#        hideAlert()
-#    $('body').on 'click', '.delete-all-btn.active', (e) ->
-#        $(e.currentTarget).removeClass('active')
-#        hideAlert()
-    # /end delete videos
 
 
     # archive video
@@ -174,65 +100,27 @@ $ ->
     # /end sorting
 
 
-    # inline player
-    $('body').on 'click', '.thumbnail', (e) ->
-        $('#video-container').remove()
-        $('.player-open.arrow').remove()
-        $video = $($(e.target).parents('.video'))
-        $title = $video.find('.title').text()
-        $embedUrl = $video.data('embed-url') + '?autoplay=1'
-        top = $video.offset().top
-        $video.append('<i class="player-open arrow icon-caret-up"></i>')
-        while $video.next().hasClass('video') and top == $video.next().offset().top
-            $video = $video.next()
-            top = $video.offset().top
-
-        $player = $('
-            <div id="video-container">
-                <i class="icon-times close-btn"></i>
-                <div class="player-title ellipsize">' + $title + '</div>
-                <div class="auto-resizable-iframe">
-                    <div><iframe type="text/html" class="video-player" src="' + $embedUrl + '" frameborder="0" allowfullscreen></iframe></div>
-                </div>
-                <div class="clear"></div>
-            </div>
-        ')
-        $video.after($player)
-#        window.addEventListener('scroll', repositionPlayer($player), false)
-
-    $('body').on 'click', '.close-btn', (e) ->
-        $(e.target).parent().remove()
-        $('.mask').remove()
-        $('.player-open.arrow').remove()
-#        window.removeEventListener('scroll', repositionPlayer())
-    # /end inline player
-
-
     # infinite scroll
-#    @listBottom = $('#video-list').offset().top + $('#video-list').height()
-#    @wh = $(window).height()
-#    if @listBottom < @wh
-#        @stopScroll = false
-    $(window).on 'scroll', ->
-        if @stopScroll
-            return false
-
-        @dh = $(document).height() - 10
-        @nextUrl = $('#next-page').data('next-url')
-        @wscroll = $(window).scrollTop() + $(window).height()
-        if @wscroll > @dh
-            if @nextUrl
-                @stopScroll = true
-                $('.video-loader').html('<i class="icon-contrast spinner"></i>')
-                $.get @nextUrl, (response) =>
-                    $(response).find('.video').each (idx, el) =>
-                        $('.videos-content').append($(el))
-
-                    $('#pagination').html $(response).find('#pagination').html()
-                    @stopScroll = false
-                    $('.video-loader').html('')
-            else
-                @stopScroll = true
+#    $(window).on 'scroll', ->
+#        if @stopScroll
+#            return false
+#
+#        @dh = $(document).height() - 10
+#        @nextUrl = $('#next-page').data('next-url')
+#        @wscroll = $(window).scrollTop() + $(window).height()
+#        if @wscroll > @dh
+#            if @nextUrl
+#                @stopScroll = true
+#                $('.video-loader').html('<i class="icon-contrast spinner"></i>')
+#                $.get @nextUrl, (response) =>
+#                    $(response).find('.video').each (idx, el) =>
+#                        $('.videos-content').append($(el))
+#
+#                    $('#pagination').html $(response).find('#pagination').html()
+#                    @stopScroll = false
+#                    $('.video-loader').html('')
+#            else
+#                @stopScroll = true
     # /end infinite scroll
 
 
