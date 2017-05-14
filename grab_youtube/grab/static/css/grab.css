@@ -219,9 +219,13 @@ a.disabled:hover, a.disabled:hover label {
     left: calc(50% - 18px);
 }
 
-.date, .faded {
+.date, .faded, .faded a {
     color: #aaa;
     font-size: 11px;
+}
+
+.author {
+    padding: 2px 0;
 }
 
 .video-details {

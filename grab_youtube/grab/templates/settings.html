@@ -51,7 +51,7 @@
             {% endif %}
             <form class="password-form{% if has_password %} hidden{% else %} set-password-form{% endif %}" method="post" action="{% url 'grab_youtube.grab.views.profile_settings' slug %}">
                 {% if has_password %}
-                    <input type="password" name="old_password" placeholder="Current Password"/>
+                    <input type="password" name="old_password" placeholder="Current Password" autofocus="autofocus"/>
                     <div class="form-error" data-for-field="old_password"></div>
                 {% endif %}
 

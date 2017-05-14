@@ -118,14 +118,17 @@
                             <div class="clear"></div>
                             <div class="details">
                                 <a class="title" href="{{ video.get_absolute_url }}" title="{{ video.title }}">{% if video in profile_ratings.items %}yes{% endif %}{{ video.title }}</a>
+                                <div class="author faded">
+                                    <a href="#">{{ video.profile.name }}</a>
+                                </div>
                                 <div class="date">
                                     {% include 'label_with_icon_fragment.html' with icon=video.privacy_icon label=video.shared_at|date:'M d Y' %}
                                 </div>
                                 <div class="video-rating" data-rate-url="{% url 'grab_youtube.grab.views.rate_video' video.id %}">
-                                    <div class="video-rating-btn rating-heart{% if request.profile == profile %} disabled{% endif %}{% if video.id in profile_hearts %} selected{% endif %}" data-rating="heart">
+                                    <div class="video-rating-btn rating-heart{% if request.profile == video.profile %} disabled{% endif %}{% if video.id in profile_hearts %} selected{% endif %}" data-rating="heart">
                                         {% include 'label_with_icon_fragment.html' with icon='heart rating-icon' label=video.hearts %}
                                     </div>
-                                    <div class="video-rating-btn rating-poo{% if request.profile == profile %} disabled{% endif %}{% if video.id in profile_poos %} selected{% endif %}" data-rating="poo">
+                                    <div class="video-rating-btn rating-poo{% if request.profile == video.profile %} disabled{% endif %}{% if video.id in profile_poos %} selected{% endif %}" data-rating="poo">
                                         {% include 'label_with_icon_fragment.html' with icon='poo rating-icon' label=video.poos %}
                                     </div>
                                     <div class="clear"></div>
